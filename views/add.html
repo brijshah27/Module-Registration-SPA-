@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+
+<head>
+    <title>SPA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.min.js"></script>
+    <script src="../js/controllers/add.js"></script>
+</head>
+
+<body ng-controller="addCtrl">
+
+    <div style="float:left">
+                <h4>Module Details</h4><br>
+          <a href="#/add" ng-click="hideAddModuleForm()">{{addModuleText}}</a><br><br>
+          <form ng-submit="addModules()" ng-hide="showAddModuleForm==false">
+      <div class="form-group row">
+                <input type="text" ng-model="module_name" class="form-control" placeholder="Module Name">
+            </div>
+        <div class="form-group row">
+                  <input type="text" ng-model="module_address" class="form-control" placeholder="Module Address">
+              </div>
+              <div class="form-group row">
+                <div class="col-md-2 text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+</div>
+
+
+<!-- add members starts !-->
+<div style="float:right">
+
+  <h4 style="float:left">Add members</h4><br>
+  <a style="float:left" href="#/add" ng-click="hideAddMemeberForm()">{{addMemberText}}</a>
+
+        <form ng-submit="addMembers()" ng-hide="showAddMemberForm==false">
+     
+        <div class="form-group row">
+                  <input type="text" ng-model="firstName" class="form-control" placeholder="First Name">
+              </div>
+
+              <div class="form-group row">
+                        <input type="text" ng-model="lastName" class="form-control" placeholder="Last Name">
+                    </div>
+                    <div class="form-group row">
+                      <input type="text" ng-model="email" class="form-control" placeholder="email">
+                    </div>
+            <div class="form-group row">
+            <p>Select Module:</p>
+            <div class="dropdown">
+              <select ng-model="dropdown_value"><p>select module:</p>
+                  <option ng-repeat="modules in module" value="{{modules.module_name}}">{{modules.module_name}}
+                  </option>
+              </select>
+            </div>
+          </div>
+
+            <div class="form-group row">
+              <div class="col-md-2 text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+            </div>
+
+
+        </form>
+</div>
+
+<!-- both forms ends here !-->
+<!-- Table for members starts !-->
+        <table class ="table table-bordered" ng-repeat="modules in module | orderBy: 'module_name'">
+            <thead style="background-color:rgb(65, 238, 244)">
+            <tr>
+                <th colspan="4"><a href="https://{{modules.module_address}}">{{modules.module_name}}</a></th>
+            </tr>
+            </thead>
+                <thead>
+                <tr>
+                    <td>
+                        <table class="table table-bordered table-hover" ng-if="members">
+
+                            <tr>
+                                <th scope="row">First Name</th>
+                                <th scope="row">Last Name</th>
+                                <th scope="row">E-Mail</th>
+                                <th scope="row">Action</th>
+                            </tr>
+              </thead>
+            <tbody>
+                          <tr ng-repeat="member in members | limitTo:4" ng-if="member.dropdown_value == modules.module_name">
+                              <td>{{member.firstName}}</td>
+                              <td>{{member.lastName}}</td>
+                              <td>{{member.email}}</td>
+                              <td><button type="submit" class="btn btn-primary" ng-click="removeMember($index)" >Delete Member</button></td>
+                          </tr>
+            </tbody>
+          </table>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  <button type="submit" class="btn btn-primary" ng-click="removeModule($index)" >Delete {{modules.module_name}}</button>
+            </td>
+          </tr>
+
+        </table>
+
+    </div>
+
+
+
+</body>
+
+</html>
